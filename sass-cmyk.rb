@@ -57,7 +57,7 @@
     # Mix two CMYK colors (see http://stackoverflow.com/questions/1527451/cmyk-cmyk-cmyk-2)
     # Scale all components of CMYK color by given percentage
 
-    def to_s
+    def to_s(opts = {})
       "cmyk(#{@attrs[:cyan]}%,#{@attrs[:magenta]}%,#{@attrs[:yellow]}%,#{@attrs[:black]}%)" 
     end
   end
