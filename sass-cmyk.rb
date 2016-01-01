@@ -51,8 +51,9 @@
 		   :black => [100, @attrs[:black] + cmy_min].min}
     end
 
+    
+
     # TODO: methods to do the following:
-    # Normalize (replace, CMYK with corresponding amount of black
     # Mix two CMYK colors (see http://stackoverflow.com/questions/1527451/cmyk-cmyk-cmyk-2)
     # Scale all components of CMYK color by given percentage
 
@@ -79,7 +80,6 @@ module CMYKLibrary
     end
 
     cmyk_attrs = Hash[cmyk_arr]
-    puts cmyk_attrs
 
     CMYK.new(cmyk_attrs)
   end
