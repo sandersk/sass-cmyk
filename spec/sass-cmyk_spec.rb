@@ -25,8 +25,6 @@ describe "Sass CMYK object" do
     expect{ CMYK.new({:cyan=>10, :magenta=>0, :yellow=>20.5, :black=>100})}.to raise_error(ArgumentError)
   end
 
-  it "should convert to String as CSS function in format cmyk(nn%, nn%, nn%, nn%)"
-
   describe "instance methods" do
     
     before(:each) do
@@ -52,6 +50,10 @@ describe "Sass CMYK object" do
 
     it "should be able to return Black (K) component percentage" do
       @dummy_color.black.should == 70
+    end
+
+    it "should convert to String as CSS function in format cmyk(nn%,nn%,nn%,nn%)" do
+      @dummy_color.to_s.should == "cmyk(20%,40%,60%,70%)"
     end
 
     it "should be able to normalize CMYK color components (C+M+Y => K) (in place)" do

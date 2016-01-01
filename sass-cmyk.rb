@@ -4,7 +4,7 @@
 
     # Attributes specified as a hash, representing CMYK percentages, i.e.
     # CMYK.new({:cyan=>10, :magenta=>20, :yellow=>30, :black=>40}) is equivalent to cmyk(10%,20%,30%,40%)
-    def initialize(cmyk_attrs, prefix=nil)
+    def initialize(cmyk_attrs)
       # Reject all attribute values that are not numbers between 0 and 100
       cmyk_attrs.reject! {|k, v| !(v.class == Fixnum and v.between?(0, 100))}
       raise ArgumentError.new("CMYK Object must be initialized with hash values between 0 and 100 for :cyan, :magenta, :yellow, and :black") unless [:cyan, :magenta, :yellow, :black].all? {|k| cmyk_attrs.key? k}
@@ -57,8 +57,7 @@
     # Scale all components of CMYK color by given percentage
 
     def to_s
-      #TODO: Fill in code here
-      "PLACEHOLDER"
+      "cmyk(#{@attrs[:cyan]}%,#{@attrs[:magenta]}%,#{@attrs[:yellow]}%,#{@attrs[:black]}%)" 
     end
   end
 
