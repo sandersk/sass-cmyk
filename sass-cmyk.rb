@@ -54,7 +54,22 @@ module CMYKClass
 		   :black => [100, @attrs[:black] + cmy_min].min}
     end
 
-    
+    def plus(other)
+      if other.is_a?(Sass::Script::Value::CMYK)
+        new_color_attrs = {}
+        [:cyan, :magenta, :yellow, :black].each do |component|
+	  # Add corresponding components of each color, limiting to a max of 100
+	  component_sum = [self.attrs[component] + other.attrs[component], 100].min
+	  new_color_attrs[component] = component_sum
+	end
+	# Make new color from summed componenets
+	new_color = Sass::Script::Value::CMYK.new(new_color_attrs)
+	# Normalize component values
+	new_color.normalize!
+      else
+        raise ArgumentError.new("Cannot add object of class #{other.class} to a CMYK color. Only CMYK colors can be added to CMYK colors")
+      end
+    end    
 
     # TODO: methods to do the following:
     # Add coverage for all the other instance methods in base that are necessary to override

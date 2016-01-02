@@ -79,19 +79,23 @@ describe "Sass CMYK object" do
     it "should be able to add a CMYK color to itself and return a new color" do
       color1 = Sass::Script::Value::CMYK.new({:cyan=>25, :magenta=>50, :yellow=>0, :black=>0})
       color2 = Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>10, :yellow=>0, :black=>0})
-      color1 plus color2.attrs.should == {:cyan=>35, :magenta=>60, :yellow=>0, :black=>0}
+      color1.plus(color2).attrs.should == {:cyan=>35, :magenta=>60, :yellow=>0, :black=>0}
     end
 
     it "should max out CMYK values at 100% when adding two colors" do
       color1 = Sass::Script::Value::CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
       color2 = Sass::Script::Value::CMYK.new({:cyan=>30, :magenta=>10, :yellow=>0, :black=>0})
-      color1 plus color2.attrs.should == {:cyan=>100, :magenta=>60, :yellow=>0, :black=>0}
+      color1.plus(color2).attrs.should == {:cyan=>100, :magenta=>60, :yellow=>0, :black=>0}
     end
 
     it "should normalize resulting color when adding two colors" do
       color1 = Sass::Script::Value::CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
       color2 = Sass::Script::Value::CMYK.new({:cyan=>30, :magenta=>0, :yellow=>20, :black=>0})
-      color1 plus color2.attrs.should == {:cyan=>80, :magenta=>30, :yellow=>0, :black=>20}
+      color1.plus(color2).attrs.should == {:cyan=>80, :magenta=>30, :yellow=>0, :black=>20}
+    end
+
+    it "should raise an error when adding something other than a CMYK color to itself" do
+      expect{ @dummy_color.plus(2) }.to raise_error(ArgumentError)    
     end
 
   end
