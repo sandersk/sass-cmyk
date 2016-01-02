@@ -36,6 +36,7 @@
     def normalize!
       # Normalize color components in place
       @attrs.merge!(_normalize)
+      self
     end
 
     def _normalize
@@ -54,6 +55,7 @@
     
 
     # TODO: methods to do the following:
+    # Add coverage for all the other instance methods in base that are necessary to override
     # Mix two CMYK colors (see http://stackoverflow.com/questions/1527451/cmyk-cmyk-cmyk-2)
     # Scale all components of CMYK color by given percentage
 
