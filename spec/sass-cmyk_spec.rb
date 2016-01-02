@@ -5,31 +5,31 @@ require_relative '../sass-cmyk.rb'
 describe "Sass CMYK object" do
 
   it "should be successfully instantiated with CMYK values" do
-     cmyk_color = CMYK.new({:cyan=>10, :magenta=>20, :yellow=>30, :black=>40})
-     cmyk_color.class.should == CMYK
+     cmyk_color = Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>20, :yellow=>30, :black=>40})
+     cmyk_color.class.should == Sass::Script::Value::CMYK
   end
 
   it "should raise an error when instantiated with one or more CMYK values missing" do
-    expect{ CMYK.new({:cyan=>10, :magenta=>0, :yellow=>3})}.to raise_error(ArgumentError)
+    expect{ Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>0, :yellow=>3})}.to raise_error(ArgumentError)
   end
 
   it "should raise an error when instantiated with invalid value (over 100) for one or more CMYK components" do
-    expect{ CMYK.new({:cyan=>10, :magenta=>0, :yellow=>3, :black=>120})}.to raise_error(ArgumentError)
+    expect{ Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>0, :yellow=>3, :black=>120})}.to raise_error(ArgumentError)
   end
 
   it "should raise an error when instantiated with invalid value (less than 0) for one or more CMYK components" do
-    expect{ CMYK.new({:cyan=>10, :magenta=>0, :yellow=>-2, :black=>100})}.to raise_error(ArgumentError)
+    expect{ Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>0, :yellow=>-2, :black=>100})}.to raise_error(ArgumentError)
   end
 
   it "should raise an error when instantiated with invalid value (non-integer) for one or more CMYK components" do
-    expect{ CMYK.new({:cyan=>10, :magenta=>0, :yellow=>20.5, :black=>100})}.to raise_error(ArgumentError)
+    expect{ Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>0, :yellow=>20.5, :black=>100})}.to raise_error(ArgumentError)
   end
 
   describe "instance methods" do
     
     before(:each) do
-      @dummy_color = CMYK.new({:cyan=>20, :magenta=>40, :yellow=>60, :black=>70})
-      @dummy_color_already_normalized = CMYK.new({:cyan=>0, :magenta=>30, :yellow=>10, :black=>20})
+      @dummy_color = Sass::Script::Value::CMYK.new({:cyan=>20, :magenta=>40, :yellow=>60, :black=>70})
+      @dummy_color_already_normalized = Sass::Script::Value::CMYK.new({:cyan=>0, :magenta=>30, :yellow=>10, :black=>20})
     end
 
     it "should be able to return its attrs" do
@@ -77,20 +77,20 @@ describe "Sass CMYK object" do
     end
 
     it "should be able to add a CMYK color to itself and return a new color" do
-      color1 = CMYK.new({:cyan=>25, :magenta=>50, :yellow=>0, :black=>0})
-      color2 = CMYK.new({:cyan=>10, :magenta=>10, :yellow=>0, :black=>0})
+      color1 = Sass::Script::Value::CMYK.new({:cyan=>25, :magenta=>50, :yellow=>0, :black=>0})
+      color2 = Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>10, :yellow=>0, :black=>0})
       color1 plus color2.attrs.should == {:cyan=>35, :magenta=>60, :yellow=>0, :black=>0}
     end
 
     it "should max out CMYK values at 100% when adding two colors" do
-      color1 = CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
-      color2 = CMYK.new({:cyan=>30, :magenta=>10, :yellow=>0, :black=>0})
+      color1 = Sass::Script::Value::CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
+      color2 = Sass::Script::Value::CMYK.new({:cyan=>30, :magenta=>10, :yellow=>0, :black=>0})
       color1 plus color2.attrs.should == {:cyan=>100, :magenta=>60, :yellow=>0, :black=>0}
     end
 
     it "should normalize resulting color when adding two colors" do
-      color1 = CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
-      color2 = CMYK.new({:cyan=>30, :magenta=>0, :yellow=>20, :black=>0})
+      color1 = Sass::Script::Value::CMYK.new({:cyan=>75, :magenta=>50, :yellow=>0, :black=>0})
+      color2 = Sass::Script::Value::CMYK.new({:cyan=>30, :magenta=>0, :yellow=>20, :black=>0})
       color1 plus color2.attrs.should == {:cyan=>80, :magenta=>30, :yellow=>0, :black=>20}
     end
 

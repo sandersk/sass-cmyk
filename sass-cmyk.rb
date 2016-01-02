@@ -1,9 +1,11 @@
+module CMYKClass
+
   class CMYK < Sass::Script::Value::Base
 
     attr_reader :attrs
 
     # Attributes specified as a hash, representing CMYK percentages, i.e.
-    # CMYK.new({:cyan=>10, :magenta=>20, :yellow=>30, :black=>40}) is equivalent to cmyk(10%,20%,30%,40%)
+    # Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>20, :yellow=>30, :black=>40}) is equivalent to cmyk(10%,20%,30%,40%)
     def initialize(cmyk_attrs)
       # Reject all attribute values that are not numbers between 0 and 100
       cmyk_attrs.reject! {|k, v| !(v.class == Fixnum and v.between?(0, 100))}
@@ -30,7 +32,7 @@
     def normalize
       # Return new CMYK object with normalized color components
       new_color_attrs = @attrs.merge(_normalize)
-      CMYK.new(new_color_attrs)
+      Sass::Script::Value::CMYK.new(new_color_attrs)
     end
 
     def normalize!
@@ -63,6 +65,7 @@
       "cmyk(#{@attrs[:cyan]}%,#{@attrs[:magenta]}%,#{@attrs[:yellow]}%,#{@attrs[:black]}%)" 
     end
   end
+end
 
 module CMYKLibrary
   def cmyk(c, m, y, k)
@@ -83,7 +86,7 @@ module CMYKLibrary
 
     cmyk_attrs = Hash[cmyk_arr]
 
-    CMYK.new(cmyk_attrs)
+    Sass::Script::Value::CMYK.new(cmyk_attrs)
   end
 
   # TODO: DECLARE NEEDED HERE
@@ -93,6 +96,8 @@ module Sass::Script::Functions
   include CMYKLibrary
 end
 
-
+module Sass::Script::Value
+  include CMYKClass
+end
 
 
