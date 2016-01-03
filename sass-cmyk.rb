@@ -67,8 +67,12 @@ module CMYKClass
 	# Normalize component values
 	new_color.normalize!
       else
-        raise ArgumentError.new("Cannot add object of class #{other.class} to a CMYK color. Only CMYK colors can be added to CMYK colors")
+        raise ArgumentError.new("Cannot add object of class #{other.class} to CMYK color #{self}. Only CMYK colors can be added to CMYK colors")
       end
+    end
+
+    def minus(other)
+      raise NoMethodError.new("Cannot apply subtraction to #{self}. Subtraction not supported for CMYK colors.")
     end    
 
     # TODO: methods to do the following:

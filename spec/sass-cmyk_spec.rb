@@ -98,6 +98,10 @@ describe "Sass CMYK object" do
       expect{ @dummy_color.plus(2) }.to raise_error(ArgumentError)    
     end
 
+    it "should raise an error when subtracting something from itself" do
+      expect{ @dummy_color.minus(@dummy_color_already_normalized) }.to raise_error(NoMethodError)
+    end
+
   end
   
 end
