@@ -75,13 +75,15 @@ module CMYKClass
       raise NoMethodError.new("Cannot apply subtraction to #{self}. Subtraction not supported for CMYK colors.")
     end
 
+    # TODO: This does not work commutatively yet; only works for CMYK * scalar, and not scalar * CMYK
+    # To add support for scalar * CMYK, need to override "times" instance method on Sass::Script::Value::Number
     def times(other)
       if other.is_a?(Sass::Script::Value::Number)
         scale_factor = other.value
         new_color_attrs = {}
         [:cyan, :magenta, :yellow, :black].each do |component|
 	  # Scale corresponding components of each color by "scale_factor"
-	  new_color_attrs[component] = (self.attrs[component] * scale_factor).to_i
+	  new_color_attrs[component] = (self.attrs[component] * scale_factor).round
 	end
 	# Raise error if any resulting component attribute is over 100%, as that would mean it's not possible to scale proportionally
 	raise ArgumentError.new("Cannot scale #{self} proportionally by #{other}, as that would result in at least one component over 100%") if new_color_attrs.map {|k, v| v}.max > 100
