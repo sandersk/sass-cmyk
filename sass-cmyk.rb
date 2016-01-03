@@ -73,7 +73,11 @@ module CMYKClass
 
     def minus(other)
       raise NoMethodError.new("Cannot apply subtraction to #{self}. Subtraction not supported for CMYK colors.")
-    end    
+    end
+
+    def times(other)
+      # TODO: Add code here
+    end
 
     # TODO: methods to do the following:
     # Add coverage for all the other instance methods in base that are necessary to override

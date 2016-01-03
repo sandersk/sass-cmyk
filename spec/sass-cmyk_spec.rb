@@ -102,6 +102,22 @@ describe "Sass CMYK object" do
       expect{ @dummy_color.minus(@dummy_color_already_normalized) }.to raise_error(NoMethodError)
     end
 
+    it "should be able to scale down CMYK color component values by multiplying by a scalar value" do
+      @dummy_color.times(0.5).attrs.should == {:cyan=>10, :magenta=>20, :yellow=>30, :black=>35}
+    end
+
+    it "should be able to scale up CMYK color component values by multiplying by a scalar value" do
+      @dummy_color.times(1.1).attrs.should == {:cyan=>22, :magenta=>44, :yellow=>66, :black=>77}
+    end
+
+    it "should raise an error when scaling up CMYK colors proportionally would result in at least one component over 100%" do
+      expect{ @dummy_color.times(1.5)}.to raise_error(ArgumentError)
+    end
+
+    it "should raise an error when multiplied by anything other than a number" do
+      expect{ @dummy_color.times(@dummy_color_already_normalized) }.to raise_error(ArgumentError)
+    end
+
   end
   
 end
