@@ -103,11 +103,19 @@ describe "Sass CMYK object" do
     end
 
     it "should be able to scale down CMYK color component values by multiplying by a scalar value" do
-      @dummy_color.times(0.5).attrs.should == {:cyan=>10, :magenta=>20, :yellow=>30, :black=>35}
+      @dummy_color_already_normalized.times(0.1).attrs.should == {:cyan=>0, :magenta=>3, :yellow=>1, :black=>2}
     end
 
     it "should be able to scale up CMYK color component values by multiplying by a scalar value" do
-      @dummy_color.times(1.1).attrs.should == {:cyan=>22, :magenta=>44, :yellow=>66, :black=>77}
+      @dummy_color_already_normalized.times(1.2).attrs.should == {:cyan=>0, :magenta=>36, :yellow=>12, :black=>24}
+    end
+
+    it "should be able to scale down CMYK color component values by multiplying by a scalar value, and normalize results" do
+      @dummy_color.times(0.5).attrs.should == {:cyan=>0, :magenta=>10, :yellow=>20, :black=>45}
+    end
+
+    it "should be able to scale up CMYK color component values by multiplying by a scalar value, and normalize results" do
+      @dummy_color.times(1.1).attrs.should == {:cyan=>0, :magenta=>22, :yellow=>44, :black=>99}
     end
 
     it "should raise an error when scaling up CMYK colors proportionally would result in at least one component over 100%" do

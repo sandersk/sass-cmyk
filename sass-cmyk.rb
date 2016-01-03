@@ -76,7 +76,21 @@ module CMYKClass
     end
 
     def times(other)
-      # TODO: Add code here
+      if other.is_a?(Sass::Script::Value::Number) or other.is_a?(Fixnum) or other.is_a?(Float)
+        new_color_attrs = {}
+        [:cyan, :magenta, :yellow, :black].each do |component|
+	  # Scale corresponding components of each color by "other"
+	  new_color_attrs[component] = (self.attrs[component] * other).to_i
+	end
+	# Raise error if any resulting component attribute is over 100%, as that would mean it's not possible to scale proportionally
+	raise ArgumentError.new("Cannot scale #{self} proportionally by #{other}, as that would result in at least one component over 100%") if new_color_attrs.map {|k, v| v}.max > 100
+	# Make new color from scaled components
+	new_color = Sass::Script::Value::CMYK.new(new_color_attrs)
+	# Normalize component values
+	new_color.normalize!
+      else
+        raise ArgumentError.new("Cannot multiply #{self} by #{other}. CMYK colors can only be multiplied by numbers")
+      end
     end
 
     # TODO: methods to do the following:
