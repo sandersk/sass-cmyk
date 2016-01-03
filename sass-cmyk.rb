@@ -76,11 +76,12 @@ module CMYKClass
     end
 
     def times(other)
-      if other.is_a?(Sass::Script::Value::Number) or other.is_a?(Fixnum) or other.is_a?(Float)
+      if other.is_a?(Sass::Script::Value::Number)
+        scale_factor = other.value
         new_color_attrs = {}
         [:cyan, :magenta, :yellow, :black].each do |component|
-	  # Scale corresponding components of each color by "other"
-	  new_color_attrs[component] = (self.attrs[component] * other).to_i
+	  # Scale corresponding components of each color by "scale_factor"
+	  new_color_attrs[component] = (self.attrs[component] * scale_factor).to_i
 	end
 	# Raise error if any resulting component attribute is over 100%, as that would mean it's not possible to scale proportionally
 	raise ArgumentError.new("Cannot scale #{self} proportionally by #{other}, as that would result in at least one component over 100%") if new_color_attrs.map {|k, v| v}.max > 100

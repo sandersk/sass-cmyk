@@ -103,23 +103,28 @@ describe "Sass CMYK object" do
     end
 
     it "should be able to scale down CMYK color component values by multiplying by a scalar value" do
-      @dummy_color_already_normalized.times(0.1).attrs.should == {:cyan=>0, :magenta=>3, :yellow=>1, :black=>2}
+      scalar_val = Sass::Script::Value::Number.new(0.1)
+      @dummy_color_already_normalized.times(scalar_val).attrs.should == {:cyan=>0, :magenta=>3, :yellow=>1, :black=>2}
     end
 
     it "should be able to scale up CMYK color component values by multiplying by a scalar value" do
-      @dummy_color_already_normalized.times(1.2).attrs.should == {:cyan=>0, :magenta=>36, :yellow=>12, :black=>24}
+      scalar_val = Sass::Script::Value::Number.new(1.2)
+      @dummy_color_already_normalized.times(scalar_val).attrs.should == {:cyan=>0, :magenta=>36, :yellow=>12, :black=>24}
     end
 
     it "should be able to scale down CMYK color component values by multiplying by a scalar value, and normalize results" do
-      @dummy_color.times(0.5).attrs.should == {:cyan=>0, :magenta=>10, :yellow=>20, :black=>45}
+      scalar_val = Sass::Script::Value::Number.new(0.5)
+      @dummy_color.times(scalar_val).attrs.should == {:cyan=>0, :magenta=>10, :yellow=>20, :black=>45}
     end
 
     it "should be able to scale up CMYK color component values by multiplying by a scalar value, and normalize results" do
-      @dummy_color.times(1.1).attrs.should == {:cyan=>0, :magenta=>22, :yellow=>44, :black=>99}
+      scalar_val = Sass::Script::Value::Number.new(1.1)
+      @dummy_color.times(scalar_val).attrs.should == {:cyan=>0, :magenta=>22, :yellow=>44, :black=>99}
     end
 
     it "should raise an error when scaling up CMYK colors proportionally would result in at least one component over 100%" do
-      expect{ @dummy_color.times(1.5)}.to raise_error(ArgumentError)
+      scalar_val = Sass::Script::Value::Number.new(1.5)
+      expect{ @dummy_color.times(scalar_val)}.to raise_error(ArgumentError)
     end
 
     it "should raise an error when multiplied by anything other than a number" do
