@@ -137,6 +137,14 @@ module CMYKLibrary
   end
 
   # TODO: DECLARE NEEDED HERE
+
+  def cmyk_mix(cmyk_color1, cmyk_color2)
+    raise ArgumentError.new("Bad arguments to cmyk_mix: #{cmyk_color1}, #{cmyk_color2}. cmyk_mix requires two CMYK colors as arguments") if !(cmyk_color1.is_a?(Sass::Script::Value::CMYK) && cmyk_color2.is_a?(Sass::Script::Value::CMYK))
+    cmyk_color1.plus(cmyk_color2)
+  end
+
+  # TODO: DECLARE NEEDED HERE
+
 end
 
 module Sass::Script::Functions

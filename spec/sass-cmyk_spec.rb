@@ -156,6 +156,8 @@ describe "Sass CMYK functions" do
 
   before(:each) do
     @dummy_functions_env = Sass::Script::Functions::EvaluationContext.new(Sass::Environment.new())
+    @dummy_color_1 = Sass::Script::Value::CMYK.new({:cyan=>10, :magenta=>40, :yellow=>0, :black=>20})
+    @dummy_color_2 = Sass::Script::Value::CMYK.new({:cyan=>5, :magenta=>10, :yellow=>50, :black=>5})
   end
 
   it "should be able to construct a CMYK object with cmyk() using a valid set of floats" do
@@ -199,4 +201,14 @@ describe "Sass CMYK functions" do
   it "should raise an error when constructing a CMYK object with less than 4 arguments" do
     expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(10, '%'), Sass::Script::Value::Number.new(20, '%'), Sass::Script::Value::Number.new(30, '%')) }.to raise_error(ArgumentError)
   end
+
+  it "should be able to mix two CMYK color objects with cmyk_mix()" do
+    mixed_color = @dummy_functions_env.cmyk_mix(@dummy_color_1, @dummy_color_2)
+    "#{mixed_color}".should == "cmyk(0%,35%,35%,40%)"
+  end
+
+  it "should raise an error when running cmyk_mix() on non-CMYK color arguments" do
+    expect { @dummy_functions_env.cmyk_mix(@dummy_color_1, Sass::Script::Value::Number.new(1)) }.to raise_error(ArgumentError) 
+  end
+  
 end
