@@ -131,6 +131,24 @@ describe "Sass CMYK object" do
       expect{ @dummy_color.times(@dummy_color_already_normalized) }.to raise_error(ArgumentError)
     end
 
+    it "should be able to scale down CMYK color component values by dividing by a scalar value" do
+      scalar_val = Sass::Script::Value::Number.new(10)
+      @dummy_color_already_normalized.div(scalar_val).attrs.should == {:cyan=>0, :magenta=>3, :yellow=>1, :black=>2}
+    end
+
+    it "should be able to scale down CMYK color component values by dividing by a scalar value, and normalize results" do
+      scalar_val = Sass::Script::Value::Number.new(2)
+      @dummy_color.div(scalar_val).attrs.should == {:cyan=>0, :magenta=>10, :yellow=>20, :black=>45}
+    end
+
+    it "should raise an error when dividing by anything other than a number" do
+      expect{ @dummy_color.div(@dummy_color_already_normalized) }.to raise_error(ArgumentError)
+    end
+
+    it "should raise an error when dividing by 0" do
+      expect{ @dummy_color.div(0) }.to raise_error(ArgumentError)
+    end
+
   end
   
 end

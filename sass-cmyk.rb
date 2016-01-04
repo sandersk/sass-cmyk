@@ -96,6 +96,13 @@ module CMYKClass
       end
     end
 
+    def div(other)
+      raise ArgumentError.new("Cannot divide #{self} by #{other}. CMYK colors can only be divided by numbers") if !other.is_a?(Sass::Script::Value::Number)
+      raise ArgumentError.new("Cannot divide CMYK color #{self} by zero") if other.value == 0
+      reciprocal = Sass::Script::Value::Number.new(1.0/other.value)
+      self.times(reciprocal)
+    end
+
     # TODO: methods to do the following:
     # Add coverage for all the other instance methods in base that are necessary to override
     # Mix two CMYK colors (see http://stackoverflow.com/questions/1527451/cmyk-cmyk-cmyk-2)
