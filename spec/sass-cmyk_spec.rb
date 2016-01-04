@@ -150,5 +150,53 @@ describe "Sass CMYK object" do
     end
 
   end
-  
+end
+
+describe "Sass CMYK functions" do
+
+  before(:each) do
+    @dummy_functions_env = Sass::Script::Functions::EvaluationContext.new(Sass::Environment.new())
+  end
+
+  it "should be able to construct a CMYK object with cmyk() using a valid set of floats" do
+    c = @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(0.1), Sass::Script::Value::Number.new(0.2), Sass::Script::Value::Number.new(0.3), Sass::Script::Value::Number.new(0))
+    c.is_a?(Sass::Script::Value::CMYK).should == true
+    c.attrs.should == {:cyan=>10, :magenta=>20, :yellow=>30, :black=>0}
+  end
+
+  it "should be able to construct a CMYK object with cmyk() using a valid set of floats, rounding to nearest percent" do
+    c = @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(0.1005), Sass::Script::Value::Number.new(0.2222), Sass::Script::Value::Number.new(0.3555555), Sass::Script::Value::Number.new(0))
+    c.is_a?(Sass::Script::Value::CMYK).should == true
+    c.attrs.should == {:cyan=>10, :magenta=>22, :yellow=>36, :black=>0}
+  end
+
+  it "should raise an error when constructing a CMYK object using floats not between 0 and 1 (greater than 1)" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(0.1005), Sass::Script::Value::Number.new(1.2222), Sass::Script::Value::Number.new(0.3555555), Sass::Script::Value::Number.new(0)) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when constructing a CMYK object using floats not between 0 and 1 (less than 0)" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(-0.1005), Sass::Script::Value::Number.new(0.2222), Sass::Script::Value::Number.new(0.3555555), Sass::Script::Value::Number.new(0)) }.to raise_error(ArgumentError)
+  end
+
+  it "should be able to construct a CMYK object with cmyk() using a valid set of percentages" do
+    c = @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(10, '%'), Sass::Script::Value::Number.new(20, '%'), Sass::Script::Value::Number.new(30, '%'), Sass::Script::Value::Number.new(0, '%'))
+    c.is_a?(Sass::Script::Value::CMYK).should == true
+    c.attrs.should == {:cyan=>10, :magenta=>20, :yellow=>30, :black=>0}
+  end
+
+  it "should raise an error when constructing a CMYK object with cmyk using non-whole-number percentages" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(10.5, '%'), Sass::Script::Value::Number.new(20.4, '%'), Sass::Script::Value::Number.new(30.333, '%'), Sass::Script::Value::Number.new(10.89, '%')) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when constructing a CMYK object with cmyk using negative percentages" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(-10, '%'), Sass::Script::Value::Number.new(20, '%'), Sass::Script::Value::Number.new(30, '%'), Sass::Script::Value::Number.new(10, '%')) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when constructing a CMYK object with cmyk using percentages > 100" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(10, '%'), Sass::Script::Value::Number.new(120, '%'), Sass::Script::Value::Number.new(30, '%'), Sass::Script::Value::Number.new(10, '%')) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when constructing a CMYK object with less than 4 arguments" do
+    expect { @dummy_functions_env.cmyk(Sass::Script::Value::Number.new(10, '%'), Sass::Script::Value::Number.new(20, '%'), Sass::Script::Value::Number.new(30, '%')) }.to raise_error(ArgumentError)
+  end
 end
