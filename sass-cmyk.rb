@@ -103,11 +103,6 @@ module CMYKClass
       self.times(reciprocal)
     end
 
-    # TODO: methods to do the following:
-    # Add coverage for all the other instance methods in base that are necessary to override
-    # Mix two CMYK colors (see http://stackoverflow.com/questions/1527451/cmyk-cmyk-cmyk-2)
-    # Scale all components of CMYK color by given percentage
-
     def to_s(opts = {})
       "cmyk(#{@attrs[:cyan]}%,#{@attrs[:magenta]}%,#{@attrs[:yellow]}%,#{@attrs[:black]}%)" 
     end
@@ -136,14 +131,14 @@ module CMYKLibrary
     Sass::Script::Value::CMYK.new(cmyk_attrs)
   end
 
-  # TODO: DECLARE NEEDED HERE
+  Sass::Script::Functions.declare :cmyk, [:cyan, :magenta, :yellow, :black]
 
   def cmyk_mix(cmyk_color1, cmyk_color2)
     raise ArgumentError.new("Bad arguments to cmyk_mix: #{cmyk_color1}, #{cmyk_color2}. cmyk_mix requires two CMYK colors as arguments") unless (cmyk_color1.is_a?(Sass::Script::Value::CMYK) && cmyk_color2.is_a?(Sass::Script::Value::CMYK))
     cmyk_color1.plus(cmyk_color2)
   end
 
-  # TODO: DECLARE NEEDED HERE
+  Sass::Script::Functions.declare :cmyk_mix, [:cmyk1, :cmyk2]
 
   def cmyk_scale(cmyk_color, percent)
     raise ArgumentError.new("Bad argument to cmyk_scale: #{cmyk_color}. First argument must be a CMYK color") unless cmyk_color.is_a?(Sass::Script::Value::CMYK)
@@ -152,7 +147,7 @@ module CMYKLibrary
     cmyk_color.times(Sass::Script::Value::Number.new(scale_factor_normalized))
   end
 
-  # TODO: DECLARE NEEDED HERE
+  Sass::Script::Functions.declare :cmyk_scale, [:cmyk, :percent]
 
 end
 
