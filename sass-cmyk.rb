@@ -145,6 +145,15 @@ module CMYKLibrary
 
   # TODO: DECLARE NEEDED HERE
 
+  def cmyk_scale(cmyk_color, percent)
+    raise ArgumentError.new("Bad argument to cmyk_scale: #{cmyk_color}. First argument must be a CMYK color") unless cmyk_color.is_a?(Sass::Script::Value::CMYK)
+    raise ArgumentError.new("Bad argument to cmyk_scale: #{percent}. Second argument must be a percent") unless (percent.is_a?(Sass::Script::Value::Number) && percent.is_unit?('%'))
+    scale_factor_normalized = percent.value.to_f / 100
+    cmyk_color.times(Sass::Script::Value::Number.new(scale_factor_normalized))
+  end
+
+  # TODO: DECLARE NEEDED HERE
+
 end
 
 module Sass::Script::Functions

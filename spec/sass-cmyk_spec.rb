@@ -210,5 +210,27 @@ describe "Sass CMYK functions" do
   it "should raise an error when running cmyk_mix() on non-CMYK color arguments" do
     expect { @dummy_functions_env.cmyk_mix(@dummy_color_1, Sass::Script::Value::Number.new(1)) }.to raise_error(ArgumentError) 
   end
+
+  it "should be able to scale CMYK components down proportionally with cmyk_scale()" do
+    scaled_color = @dummy_functions_env.cmyk_scale(@dummy_color_1, Sass::Script::Value::Number.new(50, '%'))
+    "#{scaled_color}".should == "cmyk(5%,20%,0%,10%)"
+  end
+
+  it "should be able to scale CMYK components up proportionally with cmyk_scale()" do
+    scaled_color = @dummy_functions_env.cmyk_scale(@dummy_color_1, Sass::Script::Value::Number.new(120, '%'))
+    "#{scaled_color}".should == "cmyk(12%,48%,0%,24%)"
+  end
+
+  it "should raise an error when scaling over 100% with cmyk_scale()" do
+    expect { @dummy_functions_env.cmyk_scale(@dummy_color_1, Sass::Script::Value::Number.new(300, '%')) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when cmyk_scale does not receive a CMYK color as first argument" do
+    expect { @dummy_functions_env.cmyk_scale("NOT CMYK COLOR", Sass::Script::Value::Number.new(10, '%')) }.to raise_error(ArgumentError)
+  end
+
+  it "should raise an error when cmyk_scale does not receive a percent as second argument" do
+    expect { @dummy_functions_env.cmyk_scale(@dummy_color_1, Sass::Script::Value::Number.new(10)) }.to raise_error(ArgumentError)
+  end
   
 end
