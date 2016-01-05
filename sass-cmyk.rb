@@ -124,10 +124,10 @@ module CMYKLibrary
         comp_value_normalized = (comp_value.value * 100).round
       end
 
-      if !(comp_value_normalized.between?(0, 100))
-        raise ArgumentError.new("Invalid #{comp_name} value #{comp_value}. Must be a float between 0 and 1 or a percent between 0 and 100.")
-      else
+      if comp_value_normalized.is_a?(Fixnum) && comp_value_normalized.between?(0, 100)
         [comp_name, comp_value_normalized]
+      else
+        raise ArgumentError.new("Invalid #{comp_name} value #{comp_value}. Must be a float between 0 and 1 or a percent between 0 and 100.")
       end
     end
 
@@ -139,7 +139,7 @@ module CMYKLibrary
   # TODO: DECLARE NEEDED HERE
 
   def cmyk_mix(cmyk_color1, cmyk_color2)
-    raise ArgumentError.new("Bad arguments to cmyk_mix: #{cmyk_color1}, #{cmyk_color2}. cmyk_mix requires two CMYK colors as arguments") if !(cmyk_color1.is_a?(Sass::Script::Value::CMYK) && cmyk_color2.is_a?(Sass::Script::Value::CMYK))
+    raise ArgumentError.new("Bad arguments to cmyk_mix: #{cmyk_color1}, #{cmyk_color2}. cmyk_mix requires two CMYK colors as arguments") unless (cmyk_color1.is_a?(Sass::Script::Value::CMYK) && cmyk_color2.is_a?(Sass::Script::Value::CMYK))
     cmyk_color1.plus(cmyk_color2)
   end
 
