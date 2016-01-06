@@ -117,3 +117,4 @@ cmyk_scale($cmyk-salmon, 150%)
 
 Issues and pull requests via GitHub are welcome &#9786;
 
+**NB**: The sass-cmyk plugin _does not_ support conversions between CMYK and RGB color spaces. CMYK is a <a href="https://en.wikipedia.org/wiki/Subtractive_color">subtractive color model, whereas RGB is an <a href="https://en.wikipedia.org/wiki/Additive_color">additive model</a>, and it is not possible to convert between the two faithfully without reference to specific ICC profiles, which is not currently within scope of this project.
