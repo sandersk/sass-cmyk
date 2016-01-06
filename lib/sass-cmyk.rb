@@ -1,3 +1,5 @@
+require 'sass'
+
 module CMYKClass
 
   class CMYK < Sass::Script::Value::Base
