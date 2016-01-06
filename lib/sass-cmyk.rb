@@ -80,22 +80,23 @@ module CMYKClass
     # TODO: This does not work commutatively yet; only works for CMYK * scalar, and not scalar * CMYK
     # To add support for scalar * CMYK, need to override "times" instance method on Sass::Script::Value::Number
     def times(other)
-      if other.is_a?(Sass::Script::Value::Number)
-        scale_factor = other.value
-        new_color_attrs = {}
-        [:cyan, :magenta, :yellow, :black].each do |component|
-	  # Scale corresponding components of each color by "scale_factor"
-	  new_color_attrs[component] = (self.attrs[component] * scale_factor).round
-	end
-	# Raise error if any resulting component attribute is over 100%, as that would mean it's not possible to scale proportionally
-	raise ArgumentError.new("Cannot scale #{self} proportionally by #{other}, as that would result in at least one component over 100%") if new_color_attrs.map {|k, v| v}.max > 100
-	# Make new color from scaled components
-	new_color = Sass::Script::Value::CMYK.new(new_color_attrs)
-	# Normalize component values
-	new_color.normalize!
+      raise ArgumentError.new("Cannot multiply #{self} by #{other}. CMYK colors can only be multiplied by numbers") if !other.is_a?(Sass::Script::Value::Number)
+      if other.is_unit?('%')
+        scale_factor = other.value.to_f / 100
       else
-        raise ArgumentError.new("Cannot multiply #{self} by #{other}. CMYK colors can only be multiplied by numbers")
+        scale_factor = other.value
       end
+      new_color_attrs = {}
+      [:cyan, :magenta, :yellow, :black].each do |component|
+	# Scale corresponding components of each color by "scale_factor"
+	new_color_attrs[component] = (self.attrs[component] * scale_factor).round
+      end
+      # Raise error if any resulting component attribute is over 100%, as that would mean it's not possible to scale proportionally
+      raise ArgumentError.new("Cannot scale #{self} proportionally by #{other}, as that would result in at least one component over 100%") if new_color_attrs.map {|k, v| v}.max > 100
+      # Make new color from scaled components
+      new_color = Sass::Script::Value::CMYK.new(new_color_attrs)
+      # Normalize component values
+      new_color.normalize!
     end
 
     def div(other)
@@ -145,8 +146,7 @@ module CMYKLibrary
   def cmyk_scale(cmyk_color, percent)
     raise ArgumentError.new("Bad argument to cmyk_scale: #{cmyk_color}. First argument must be a CMYK color") unless cmyk_color.is_a?(Sass::Script::Value::CMYK)
     raise ArgumentError.new("Bad argument to cmyk_scale: #{percent}. Second argument must be a percent") unless (percent.is_a?(Sass::Script::Value::Number) && percent.is_unit?('%'))
-    scale_factor_normalized = percent.value.to_f / 100
-    cmyk_color.times(Sass::Script::Value::Number.new(scale_factor_normalized))
+    cmyk_color.times(percent)
   end
 
   Sass::Script::Functions.declare :cmyk_scale, [:cmyk, :percent]

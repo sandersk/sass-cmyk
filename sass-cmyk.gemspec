@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
     making it a great fit for doing print typesetting with CSS.
   DESC
 
-  gem.version = '0.0.1'
+  gem.version = '0.0.0'
   gem.authors = ['Sanders Kleinfeld']
   gem.email = 'sanders@oreilly.com'
   gem.homepage = 'https://github.com/sandersk/sass-cmyk'
