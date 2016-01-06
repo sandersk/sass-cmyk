@@ -3,8 +3,8 @@ Gem::Specification.new do |gem|
   gem.summary = 'A plugin for Sass that provides preprocessing for CMYK colors, including some basic color manipulation functions'
   gem.description = <<-DESC
     Need to preprocess CMYK colors with Sass? The sass-cmyk plugin lets you construct CMYK color objects with cmyk(), 
-    adds support for performing math operations (+, *, /) on CMYK colors, and provides functions for mixing, lightening, and darkening
-    colors. sass-cmyk outputs CMYK color values using cmyk() function syntax supported by AntennaHouse and PrinceXML PDF formatters,
+    adds support for performing math operations (+, *, /) on CMYK colors, and provides functions for mixing and scaling color components.
+    sass-cmyk outputs CMYK color values using cmyk() function syntax supported by AntennaHouse and PrinceXML PDF formatters,
     making it a great fit for doing print typesetting with CSS.
   DESC
 

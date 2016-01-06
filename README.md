@@ -1,7 +1,7 @@
 # sass-cmyk
 
 Need to preprocess CMYK colors with Sass? The sass-cmyk plugin lets you construct CMYK color objects with cmyk(), adds support 
-for performing math operations (+, *, /) on CMYK colors, and provides functions for mixing, lightening, and darkening colors. 
+for performing math operations (+, *, /) on CMYK colors, and provides functions for mixing and scaling color components. 
 sass-cmyk outputs CMYK color values using cmyk() function syntax supported by <a href="http://www.antennahouse.com">AntennaHouse</a> 
 and <a href="http://www.princexml.com">PrinceXML</a> PDF formatters, making it a great fit for doing print typesetting with CSS.
 
