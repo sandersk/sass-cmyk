@@ -34,14 +34,14 @@ results = sass_engine.render
 
 The sass-cmyk plugin supports constructing CMYK color objects using the `cmyk()` function, which accepts cyan, magenta, yellow, and black values (in that order) as either floats or percents, e.g.:
 
-````scss
+````css
 $cmyk-chartreuse: cmyk(0.5, 0, 1, 0);
 $cmyk-vermillion: cmyk(0%, 84%, 71%, 0%);
 ````
 
 CMYK values can also be supplied using keyword arguments, e.g.:
 
-````scss
+````css
 $cmyk-turquoise: cmyk($cyan: 71%, $magenta: 0%, $yellow: 7%, $black: 12%);
 ````
 
@@ -69,7 +69,7 @@ Which is supported by both AntennaHouse and Prince XML print typsetting applicat
 
 To mix two CMYK colors, use either the `+` operator, e.g.:
 
-````scss
+````css
 $cmyk-chartreuse + $cmyk-vermillion
 ````
 
@@ -82,7 +82,7 @@ cmyk_mix($cmyk-chartreuse, $cmyk-vermillion)
 When mixing colors, sass-cmyk will normalize color component values to ensure none exceed 100%, and that equivalent percentages of cyan,
 magenta, and yellow will be substituted with the corresponding percentage of black (i.e., if CMY values are each 30%, they can all be set to 0, and 30% can be added to K). For example, the following SCSS:
 
-````scss
+````css
 aside {
    color: cmyk(50%, 20%, 00%, 0%) + cmyk(70%, 20%, 0%, 0%);
    background-color: cmyk_mix(cmyk(30%, 50%, 0%, 0%), cmyk(10%, 0%, 30%, 0%));
@@ -101,7 +101,7 @@ aside {
 To scale CMYK color values up or down proportionally by a percentage, use the `cmyk_scale` function, which takes a CMYK color and a
 percentage, e.g.:
 
-````scss
+````css
 $cmyk-salmon: cmyk(0, 0.45, 0.69, 0);
 $cmyk-lighter-salmon: cmyk_scale($cmyk-salmon, 50%);
 ````
@@ -109,7 +109,7 @@ $cmyk-lighter-salmon: cmyk_scale($cmyk-salmon, 50%);
 When scaling up CMYK colors, sass-cmyk will throw an error if any component value exceeds 100%, which would prevent colors from being
 scaled proportionally. The following will throw an error, as it would scale the yellow percentage over 100%:
 
-````scss
+````css
 cmyk_scale($cmyk-salmon, 150%)
 ````
 
