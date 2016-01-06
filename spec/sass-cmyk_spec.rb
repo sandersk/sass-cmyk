@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'sass'
-require_relative '../sass-cmyk.rb'
+require_relative '../lib/sass-cmyk.rb'
 
 describe "Sass CMYK object" do
 
